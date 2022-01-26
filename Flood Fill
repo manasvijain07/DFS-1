@@ -1,0 +1,83 @@
+Solution 1 -  BFS
+              TC - O(m * n)
+              SC - O(m * n)
+
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        if(image == null || image[sr][sc] == newColor)
+        {
+            return image;
+        }
+        int m = image.length, n = image[0].length;
+        
+        int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+        
+        int color = image[sr][sc];
+        Queue<Integer> q = new LinkedList<>();
+        q.add(sr);
+        q.add(sc);
+        image[sr][sc] = newColor;
+        
+        while(!q.isEmpty())
+        {
+            sr = q.poll();
+            sc = q.poll();
+            for(int[] dir: dirs)
+            {
+                int r = dir[0] + sr;
+                int c = dir[1] + sc;
+                if(r >= 0 && c >= 0 && r < m && c < n && image[r][c] == color)
+                {
+                    image[r][c] = newColor;
+                    q.add(r);
+                    q.add(c);
+                }
+            }
+        }
+        return image;
+        
+    }
+}
+
+Solution 2 -  DFS
+              TC - O(m * n)
+              SC - O(m * n)
+
+class Solution {
+    
+    int[][] dirs;
+    int color;
+    
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        if(image == null || image[sr][sc] == newColor)
+        {
+            return image;
+        }
+        
+        int m = image.length, n = image[0].length;
+       
+        dirs = new int[][] {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+        
+        color = image[sr][sc];
+        
+        dfs(image, sr, sc, newColor, m, n);
+        return image;
+        
+    }
+    
+    private void dfs(int[][] image, int sr, int sc, int newColor, int m, int n)
+    {
+        // base case
+        if(sr < 0 || sc < 0 || sr >= m || sc >= n || image[sr][sc] != color)
+            return;
+        
+        // logic
+        image[sr][sc] = newColor;
+        for(int[] dir: dirs)
+        {
+            int r = dir[0] + sr;
+            int c = dir[1] + sc;
+            dfs(image, r, c, newColor, m, n);   
+        }
+    }
+}
